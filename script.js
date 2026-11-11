@@ -11,6 +11,25 @@ const sfxBox = new Audio('audio/box_open.wav');
 const sfxBlow = new Audio('audio/blow.wav');
 const sfxChime = new Audio('audio/chime.wav');
 const sfxFirework = new Audio('audio/firework.wav');
+const sfxSeal = new Audio('audio/seal_open.wav');
+
+/* ==========================================================================
+   WAX SEAL INTRO CURTAIN
+   ========================================================================== */
+function openIntroEnvelope() {
+    playSFX(sfxSeal);
+    const curtain = document.getElementById('introCurtain');
+    if (curtain) {
+        curtain.classList.add('opened');
+        setTimeout(() => curtain.style.display = 'none', 1300);
+    }
+    
+    // Tự động phát nhạc và bắn pháo hoa chào mừng
+    setTimeout(() => {
+        playMusic();
+        triggerConfetti();
+    }, 400);
+}
 
 function playSFX(audio) {
     try {

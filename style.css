@@ -1055,3 +1055,127 @@ body {
     }
 }
 
+
+
+/* ==========================================================================
+   WAX SEAL INTRO CURTAIN STYLES
+   ========================================================================== */
+.wax-curtain-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: visibility 1s ease;
+}
+
+.wax-curtain-overlay.opened {
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.curtain-half {
+    position: absolute;
+    top: 0;
+    width: 50vw;
+    height: 100vh;
+    background: radial-gradient(circle at center, #1f1638, #0e091c 80%);
+    box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.8);
+    transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+    z-index: 1;
+}
+
+.curtain-left { left: 0; }
+.curtain-right { right: 0; }
+
+.wax-curtain-overlay.opened .curtain-left {
+    transform: translateX(-100%);
+}
+.wax-curtain-overlay.opened .curtain-right {
+    transform: translateX(100%);
+}
+
+.envelope-intro-box {
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+    transition: transform 0.4s ease, opacity 0.6s ease;
+    padding: 20px;
+}
+
+.envelope-intro-box:hover {
+    transform: scale(1.05);
+}
+
+.wax-curtain-overlay.opened .envelope-intro-box {
+    opacity: 0;
+    transform: scale(1.2);
+}
+
+.envelope-visual {
+    width: 280px;
+    height: 180px;
+    background: linear-gradient(135deg, #fceddb 0%, #e8c9a8 100%);
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #d4af37;
+}
+
+.wax-seal {
+    width: 90px;
+    height: 90px;
+    background: radial-gradient(circle, #b71c1c, #7f0000);
+    border-radius: 50%;
+    box-shadow: 0 8px 25px rgba(183, 28, 28, 0.6), inset 0 2px 5px rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px dashed #ff8a80;
+    transition: transform 0.3s ease;
+}
+
+.wax-seal:hover {
+    transform: rotate(10deg) scale(1.1);
+}
+
+.wax-seal-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.wax-seal-text {
+    font-size: 0.6rem;
+    font-weight: 800;
+    color: #ffd700;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    text-align: center;
+}
+
+.intro-envelope-title {
+    font-family: 'Playfair Display', serif;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.5rem;
+    text-shadow: 0 0 15px rgba(255, 117, 140, 0.6);
+}
+
+.intro-envelope-hint {
+    color: #ffd166;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
