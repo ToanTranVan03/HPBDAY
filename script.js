@@ -501,3 +501,31 @@ animateParticles();
 
 // Tự nạp bài hát đầu tiên
 loadTrack(0);
+
+/* ==========================================================================
+   LIVE REALTIME CLOCK (ĐỒNG HỒ NGÀY GIỜ SỐNG ĐỘNG)
+   ========================================================================== */
+function updateLiveClock() {
+    const now = new Date();
+    
+    // Ngày trong tuần và ngày tháng năm tiếng Việt
+    const days = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+    const dayName = days[now.getDay()];
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const year = now.getFullYear();
+    
+    // Giờ phút giây
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    
+    const dateEl = document.getElementById('liveDate');
+    const timeEl = document.getElementById('liveTime');
+    
+    if (dateEl) dateEl.innerText = `${dayName}, ${day}/${month}/${year}`;
+    if (timeEl) timeEl.innerText = `${hours}:${minutes}:${seconds}`;
+}
+
+setInterval(updateLiveClock, 1000);
+updateLiveClock();
