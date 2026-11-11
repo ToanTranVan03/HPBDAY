@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎉 Chúc Mừng Sinh Nhật! 🎂 Happy Birthday! 🎉</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons 6.5.1 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,700;1,400&family=Pacifico&display=swap" rel="stylesheet">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Canvas hạt ánh sáng lung linh & pháo hoa nền -->
+    <canvas id="fireworks-canvas"></canvas>
+
+    <!-- Bong bóng bay lơ lửng ngẫu nhiên trên màn hình -->
+    <div class="balloon-container" id="balloonContainer"></div>
+
+    <!-- =========================================================================
+         BỘ ĐIỀU KHIỂN ÂM NHẠC ĐỈNH CAO (VINYL RECORD PLAYER DOCK)
+         ========================================================================= -->
+    <div class="music-dock" id="musicDock">
+        <!-- Đĩa than xoay vinyl -->
+        <div class="vinyl-record-wrap" id="vinylRecordWrap" onclick="togglePlayMusic()" title="Bấm đĩa than để Phát / Tạm dừng">
+            <div class="vinyl-disc" id="vinylDisc">
+                <div class="vinyl-grooves"></div>
+                <div class="vinyl-center">
+                    <i class="fas fa-music fa-spin-pulse" id="vinylCenterIcon"></i>
+                </div>
+            </div>
+            <div class="tonearm" id="tonearm"></div>
+        </div>
+
+        <!-- Thông tin bài hát & Bảng chọn nhạc -->
+        <div class="track-details">
+            <div class="d-flex align-items-center justify-content-between mb-1">
+                <span class="track-status-badge" id="trackStatusBadge">Đang dừng</span>
+                <span class="music-visualizer" id="musicVisualizer">
+                    <span></span><span></span><span></span><span></span>
+                </span>
+            </div>
+            <div class="track-name-ticker">
+                <span id="currentTrackTitle">🎶 Happy Birthday Piano Melody</span>
+            </div>
+            <div class="track-controls d-flex align-items-center gap-2 mt-2">
+                <button class="btn-audio-mini" onclick="prevSong()" title="Bài trước"><i class="fas fa-backward-step"></i></button>
+                <button class="btn-audio-mini btn-play-main" id="btnPlayMain" onclick="togglePlayMusic()" title="Phát/Tạm dừng"><i class="fas fa-play" id="mainPlayIcon"></i></button>
+                <button class="btn-audio-mini" onclick="nextSong()" title="Bài kế tiếp"><i class="fas fa-forward-step"></i></button>
+                
+                <!-- Thanh tăng giảm âm lượng -->
+                <div class="volume-slider-wrap d-none d-sm-flex align-items-center ms-2">
+                    <i class="fas fa-volume-high text-muted me-2 small"></i>
+                    <input type="range" class="form-range volume-range" id="volumeControl" min="0" max="1" step="0.05" value="0.8" oninput="changeVolume(this.value)">
+                </div>
+
+                <!-- Danh sách chọn bài (Dropdown) -->
+                <div class="dropdown ms-1">
+                    <button class="btn-audio-mini" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Chọn bài hát">
+                        <i class="fas fa-list-ul"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow" id="playlistDropdown">
+                        <li><h6 class="dropdown-header text-warning">🎵 DANH SÁCH BÀI HÁT</h6></li>
+                        <li><a class="dropdown-item active" href="javascript:void(0)" onclick="selectTrack(0)"><i class="fas fa-compact-disc me-2"></i> Happy Birthday Piano Song</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0)" onclick="selectTrack(1)"><i class="fas fa-bell me-2"></i> Happy Birthday Music Box Chimes</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0)" onclick="selectTrack(2)"><i class="fas fa-trophy me-2"></i> Celebration Victory Fanfare</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0)" onclick="selectTrack(3)"><i class="fas fa-guitar me-2"></i> Party Celebration Acoustic</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nút kích hoạt tương tác âm thanh cho trình duyệt -->
+    <div id="audioAutoBanner" class="audio-start-banner animate__animated animate__fadeInDown" onclick="initAudioUserGesture()">
+        <i class="fas fa-headphones-simple me-2"></i> Nhấp bất kỳ đâu để bật âm thanh & hiệu ứng trọn vẹn! 🎵
+    </div>
+
+    <!-- Audio Element -->
+    <audio id="mainAudio" preload="auto">
+        <source src="audio/happy_birthday_melody.wav" type="audio/wav">
+    </audio>
+
+    <!-- =========================================================================
+         THANH TIẾN TRÌNH CHUYỂN BƯỚC ĐẲNG CẤP (STEPPER PROGRESS)
+         ========================================================================= -->
+    <div class="step-indicator-wrapper">
+        <div class="step-indicator">
+            <div class="step-dot active" data-step="1" title="Hộp Quà Kỳ Diệu"><i class="fas fa-gift"></i><span class="step-text">Mở Quà</span></div>
+            <div class="step-line"></div>
+            <div class="step-dot" data-step="2" title="Thổi Nến Ước Nguyện"><i class="fas fa-cake-candles"></i><span class="step-text">Thổi Nến</span></div>
+            <div class="step-line"></div>
+            <div class="step-dot" data-step="3" title="Bức Thư Tình Cảm"><i class="fas fa-envelope-open-text"></i><span class="step-text">Thiệp Chúc</span></div>
+            <div class="step-line"></div>
+            <div class="step-dot" data-step="4" title="Kho Báu Kỷ Niệm"><i class="fas fa-photo-film"></i><span class="step-text">Kỷ Niệm</span></div>
+            <div class="step-line"></div>
+            <div class="step-dot" data-step="5" title="Vòng Quay & Pháo Hoa"><i class="fas fa-wand-magic-sparkles"></i><span class="step-text">Vũ Trụ</span></div>
+        </div>
+    </div>
+
+    <!-- KHUNG CHÍNH (CONTAINER) -->
+    <main class="main-container container">
+
+        <!-- ==================== BƯỚC 1: HỘP QUÀ BÍ MẬT 3D ==================== -->
+        <section class="step-section active animate__animated animate__fadeIn" id="step-1">
+            <div class="glass-card text-center p-4 p-md-5">
+                <div class="top-tag mb-3">
+                    <span class="badge bg-gradient-pill px-3 py-2"><i class="fas fa-crown me-1 text-warning"></i> NGÀY ĐẶC BIỆT CỦA BẠN <i class="fas fa-crown ms-1 text-warning"></i></span>
+                </div>
+                <h1 class="main-title mb-2">Gửi Người Tuyệt Vời Nhất Hôm Nay!</h1>
+                <p class="subtitle text-light-dim mb-4">Mỗi giây trôi qua đều là một phép màu. Hãy mở chiếc hộp chứa đựng những điều kỳ diệu dành riêng cho bạn!</p>
+
+                <!-- 3D Gift Box Animation -->
+                <div class="gift-box-wrapper my-4">
+                    <div class="gift-box" id="mysteryBox" onclick="openGiftBox()">
+                        <div class="gift-lid">
+                            <div class="gift-bow"></div>
+                        </div>
+                        <div class="gift-body">
+                            <div class="ribbon-v"></div>
+                            <div class="ribbon-h"></div>
+                        </div>
+                    </div>
+                    <p class="mt-3 gift-hint pulse-text"><i class="fas fa-hand-pointer me-2"></i> <strong>Chạm vào hộp quà</strong> để bắt đầu hành trình!</p>
+                </div>
+
+                <div class="mt-4 d-flex justify-content-center gap-3">
+                    <button class="btn btn-magic shadow-lg btn-glow" onclick="nextStep(2)">
+                        Khám Phá Tiếp Theo <i class="fas fa-arrow-right ms-2"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== BƯỚC 2: BÁNH KEM 3D & THỔI TẮT NẾN THỰC THẾ ==================== -->
+        <section class="step-section animate__animated animate__fadeIn d-none" id="step-2">
+            <div class="glass-card text-center p-4 p-md-5">
+                <div class="top-tag mb-3">
+                    <span class="badge bg-gradient-pill px-3 py-2"><i class="fas fa-sparkles me-1 text-warning"></i> ĐIỀU ƯỚC TUỔI MỚI <i class="fas fa-sparkles ms-1 text-warning"></i></span>
+                </div>
+                <h2 class="main-title mb-2">Nhắm Mắt Lại Và Ước Đi Nào!</h2>
+                <p class="subtitle text-light-dim mb-4">Hãy nghĩ về điều bạn mong muốn nhất cho năm tuổi mới, sau đó chạm vào ngọn nến để thổi tắt!</p>
+
+                <!-- Chiếc bánh sinh nhật tương tác -->
+                <div class="cake-container my-4">
+                    <div class="cake">
+                        <div class="plate"></div>
+                        <div class="layer layer-bottom"></div>
+                        <div class="layer layer-middle"></div>
+                        <div class="layer layer-top"></div>
+                        <div class="icing"></div>
+                        <div class="drip drip1"></div>
+                        <div class="drip drip2"></div>
+                        <div class="drip drip3"></div>
+                        <!-- Ngọn nến phát sáng -->
+                        <div class="candle" id="candle" onclick="blowCandle()" title="Chạm để thổi nến!">
+                            <div class="wick"></div>
+                            <div class="flame" id="flame"></div>
+                            <div class="smoke" id="candleSmoke"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="candle-status" class="alert alert-soft-warning d-inline-block px-4 py-2 mt-2">
+                    <i class="fas fa-fire me-2 text-warning fa-beat"></i> Chạm vào <strong>ngọn lửa</strong> hoặc nút bên dưới để <strong>Thổi Nến</strong>!
+                </div>
+
+                <div class="d-flex justify-content-center flex-wrap gap-3 mt-4">
+                    <button class="btn btn-outline-light rounded-pill px-4" onclick="prevStep(1)">
+                        <i class="fas fa-arrow-left me-2"></i> Quay lại
+                    </button>
+                    <button class="btn btn-warning rounded-pill px-4 fw-bold shadow" onclick="blowCandle()">
+                        <i class="fas fa-wind me-2"></i> Thổi Nến Ngay 🎂
+                    </button>
+                    <button class="btn btn-magic shadow-lg" id="btn-next-after-candle" onclick="nextStep(3)">
+                        Nhận Lời Chúc <i class="fas fa-heart ms-2 text-danger"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== BƯỚC 3: THIỆP CHÚC MỪNG MỞ RA TỪ PHONG BÌ ==================== -->
+        <section class="step-section animate__animated animate__fadeIn d-none" id="step-3">
+            <div class="glass-card text-center p-4 p-md-5">
+                <div class="top-tag mb-3">
+                    <span class="badge bg-gradient-pill px-3 py-2"><i class="fas fa-envelope me-1"></i> BỨC THƯ TỪ TRÁI TIM <i class="fas fa-envelope ms-1"></i></span>
+                </div>
+                <h2 class="main-title mb-2">Happy Birthday To You!</h2>
+                <p class="subtitle text-light-dim mb-4">Một phong bì thư đặc biệt vừa được gửi tới bạn...</p>
+
+                <!-- Lá thư chúc mừng phong cách phong bì vintage mở -->
+                <div class="letter-envelope-wrap mx-auto my-3">
+                    <div class="letter-card text-start p-4 p-md-5 shadow-lg">
+                        <div class="letter-stamp">
+                            <i class="fas fa-stamp text-danger fa-2x"></i>
+                        </div>
+                        <div class="letter-header text-center pb-3 mb-3 border-bottom">
+                            <span class="display-6 greeting-handwriting" id="letterGreeting">Thân gửi bạn yêu quý! 💖</span>
+                        </div>
+                        <div class="letter-body">
+                            <p class="lead fw-bold text-gradient-dark">Chào đón một tuổi mới rạng ngời, rực rỡ và đong đầy hạnh phúc!</p>
+                            <p>Nhân ngày đặc biệt hôm nay, xin gửi tới bạn ngàn điều tốt lành nhất:</p>
+                            <ul class="wish-list list-unstyled ps-3">
+                                <li><i class="fas fa-smile-beam text-warning me-2"></i> <strong>Nụ cười luôn rạng rỡ:</strong> Mỗi sớm mai thức dậy là một ngày tràn ngập tiếng cười và nguồn năng lượng tích cực.</li>
+                                <li><i class="fas fa-heart-pulse text-danger me-2"></i> <strong>Sức khỏe dẻo dai & An yên:</strong> Bình an trong tâm hồn và luôn khỏe mạnh để tận hưởng trọn vẹn cuộc sống.</li>
+                                <li><i class="fas fa-rocket text-primary me-2"></i> <strong>Sự nghiệp thăng hoa:</strong> Mọi dự định, ước mơ ấp ủ đều sẽ gặt hái thành công vượt bậc.</li>
+                                <li><i class="fas fa-gem text-info me-2"></i> <strong>Tỏa sáng theo cách của bạn:</strong> Hãy luôn tin tưởng vào chính mình, vì bạn là phiên bản độc nhất vô nhị trên thế giới!</li>
+                            </ul>
+                            <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
+                                <span class="badge bg-danger rounded-pill px-3 py-2"><i class="fas fa-heart me-1"></i> With Full Love</span>
+                                <span class="fst-italic signature-font">~ From someone who cherishes you 🌟 ~</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center gap-3 mt-4">
+                    <button class="btn btn-outline-light rounded-pill px-4" onclick="prevStep(2)">
+                        <i class="fas fa-arrow-left me-2"></i> Quay lại
+                    </button>
+                    <button class="btn btn-magic shadow-lg btn-glow" onclick="nextStep(4)">
+                        Xem Album Kỷ Niệm <i class="fas fa-images ms-2"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== BƯỚC 4: ALBUM KỶ NIỆM (CAROUSEL BOOTSTRAP XỊN) ==================== -->
+        <section class="step-section animate__animated animate__fadeIn d-none" id="step-4">
+            <div class="glass-card text-center p-4 p-md-5">
+                <div class="top-tag mb-3">
+                    <span class="badge bg-gradient-pill px-3 py-2"><i class="fas fa-camera-retro me-1"></i> MOMENTS & MEMORIES <i class="fas fa-camera-retro ms-1"></i></span>
+                </div>
+                <h2 class="main-title mb-2">Những Khoảnh Khắc Đẹp Đẽ</h2>
+                <p class="subtitle text-light-dim mb-4">Lưu giữ từng khoảnh khắc ngọt ngào nhất của tuổi thanh xuân.</p>
+
+                <!-- Bootstrap 5 Carousel nâng cao -->
+                <div id="memoryCarousel" class="carousel slide carousel-fade shadow-lg rounded-4 overflow-hidden mx-auto" data-bs-ride="carousel" style="max-width: 720px;">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#memoryCarousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
+                        <button type="button" data-bs-target="#memoryCarousel" data-bs-slide-to="1"></button>
+                        <button type="button" data-bs-target="#memoryCarousel" data-bs-slide-to="2"></button>
+                        <button type="button" data-bs-target="#memoryCarousel" data-bs-slide-to="3"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active" data-bs-interval="4500">
+                            <img src="https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1200&q=80" class="d-block w-100 carousel-img" alt="Party">
+                            <div class="carousel-caption">
+                                <span class="badge bg-danger mb-2">Party Vibe</span>
+                                <h5>Ngập Tràn Niềm Vui & Sắc Màu</h5>
+                                <p>Chúc bạn một tuổi mới rạng rỡ và muôn màu muôn vẻ như bữa tiệc này!</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item" data-bs-interval="4500">
+                            <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1200&q=80" class="d-block w-100 carousel-img" alt="Cake">
+                            <div class="carousel-caption">
+                                <span class="badge bg-warning text-dark mb-2">Sweetness</span>
+                                <h5>Ngọt Ngào Tuổi Mới</h5>
+                                <p>Ngọt ngào và ấm áp như hương vị của chiếc bánh kem sinh nhật.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item" data-bs-interval="4500">
+                            <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1200&q=80" class="d-block w-100 carousel-img" alt="Balloons">
+                            <div class="carousel-caption">
+                                <span class="badge bg-info text-dark mb-2">Dreams</span>
+                                <h5>Bay Cao Những Ước Mơ</h5>
+                                <p>Hãy tự do vút bay đến những chân trời thành công mới!</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item" data-bs-interval="4500">
+                            <img src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&w=1200&q=80" class="d-block w-100 carousel-img" alt="Friends">
+                            <div class="carousel-caption">
+                                <span class="badge bg-success mb-2">Together</span>
+                                <h5>Bên Cạnh Những Người Yêu Thương</h5>
+                                <p>Hạnh phúc luôn ở quanh bạn trong từng phút giây cuộc đời.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#memoryCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#memoryCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+
+                <div class="d-flex justify-content-center gap-3 mt-4">
+                    <button class="btn btn-outline-light rounded-pill px-4" onclick="prevStep(3)">
+                        <i class="fas fa-arrow-left me-2"></i> Quay lại
+                    </button>
+                    <button class="btn btn-magic shadow-lg btn-glow" onclick="nextStep(5)">
+                        Vũ Trụ Quà Tặng <i class="fas fa-dice ms-2"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== BƯỚC 5: VÒNG QUAY QUÀ TẶNG & TÙY BIẾN ==================== -->
+        <section class="step-section animate__animated animate__fadeIn d-none" id="step-5">
+            <div class="glass-card text-center p-4 p-md-5">
+                <div class="top-tag mb-3">
+                    <span class="badge bg-gradient-pill px-3 py-2"><i class="fas fa-gift me-1"></i> THÔNG ĐIỆP TỪ VŨ TRỤ <i class="fas fa-gift ms-1"></i></span>
+                </div>
+                <h2 class="main-title mb-2">Bấm Để Rút Quẻ Sinh Nhật!</h2>
+                <p class="subtitle text-light-dim mb-4">Xem điều tuyệt diệu nào đang chờ đón bạn trong năm tuổi mới này nhé!</p>
+
+                <!-- Quẻ sinh nhật may mắn ngẫu nhiên -->
+                <div class="fortune-cookie-box my-4">
+                    <div class="cookie-card p-4 mx-auto" id="fortuneCard">
+                        <div class="cookie-icon mb-2">
+                            <i class="fas fa-cookie-bite fa-3x text-warning fa-bounce"></i>
+                        </div>
+                        <h4 id="fortuneResult" class="fortune-text">Bấm nút bên dưới để nhận quẻ may mắn tuổi mới! 🌟</h4>
+                    </div>
+                    <div class="mt-3 d-flex flex-wrap justify-content-center gap-2">
+                        <button class="btn btn-warning btn-lg rounded-pill px-4 fw-bold shadow pulse-btn" onclick="drawFortune()">
+                            <i class="fas fa-wand-magic-sparkles me-2"></i> Rút Quẻ May Mắn
+                        </button>
+                        <button class="btn btn-danger btn-lg rounded-pill px-4 fw-bold shadow" onclick="launchMassiveFireworks()">
+                            <i class="fas fa-fireworks me-2"></i> Đại Tiệc Pháo Hoa! 🎆
+                        </button>
+                        <button class="btn btn-primary btn-lg rounded-pill px-4 fw-bold shadow" onclick="dropBalloons()">
+                            <i class="fas fa-paper-plane me-2"></i> Thả Bóng Bay! 🎈
+                        </button>
+                    </div>
+                </div>
+
+                <hr class="my-4 border-secondary opacity-25">
+
+                <!-- Tùy chỉnh tên người nhận -->
+                <div class="row justify-content-center">
+                    <div class="col-md-8 col-lg-6">
+                        <label class="form-label text-warning small fw-bold"><i class="fas fa-signature me-1"></i> Tùy biến tên người nhận trên web:</label>
+                        <div class="input-group mb-3">
+                            <input type="text" id="customNameInput" class="form-control form-control-custom" placeholder="Nhập tên người sinh nhật (vd: Linh, Nam, Ngọc...)">
+                            <button class="btn btn-magic" type="button" onclick="applyCustomName()">
+                                <i class="fas fa-check me-1"></i> Đổi Tên
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center gap-3 mt-4">
+                    <button class="btn btn-outline-light rounded-pill px-4" onclick="prevStep(4)">
+                        <i class="fas fa-arrow-left me-2"></i> Quay lại
+                    </button>
+                    <button class="btn btn-outline-info rounded-pill px-4" onclick="goToStep(1)">
+                        <i class="fas fa-redo me-2"></i> Xem lại từ đầu
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal Thông Báo Nổi Bật (Bootstrap Modal) -->
+    <div class="modal fade" id="surpriseModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content glass-modal text-white text-center p-4">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <i class="fas fa-heart text-danger fa-4x animate__animated animate__heartBeat animate__infinite"></i>
+                    </div>
+                    <h3 class="modal-title mb-3" id="surpriseModalTitle">Chúc Mừng Sinh Nhật! 🎂</h3>
+                    <p class="lead" id="surpriseModalText">Mong tuổi mới mang đến cho bạn 365 ngày ngập tràn tiếng cười, may mắn và vạn sự như ý!</p>
+                    <button type="button" class="btn btn-magic rounded-pill px-4 mt-2" data-bs-dismiss="modal" onclick="nextStep(2)">
+                        Cảm Ơn! Đi Đến Thổi Nến 🥰
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+</body>
+</html>

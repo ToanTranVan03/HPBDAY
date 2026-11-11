@@ -1,0 +1,853 @@
+/* ==========================================================================
+   ADVANCED STYLES & LUXURY GLASSMORPHISM THEME
+   ========================================================================== */
+:root {
+    --primary-gradient: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+    --magic-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gold-gradient: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+    --card-bg: rgba(22, 17, 39, 0.65);
+    --card-border: rgba(255, 255, 255, 0.16);
+    --glass-blur: blur(20px);
+    --text-primary: #ffffff;
+    --text-glow: 0 0 25px rgba(255, 117, 140, 0.7);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: radial-gradient(circle at 15% 15%, #2a1f4a, #130d24 60%, #07040d 100%);
+    color: var(--text-primary);
+    font-family: 'Montserrat', sans-serif;
+    overflow-x: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 15px 120px 15px; /* bottom padding cho music dock */
+}
+
+/* Background Canvas */
+#fireworks-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Balloon Container */
+.balloon-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.balloon {
+    position: absolute;
+    bottom: -100px;
+    width: 45px;
+    height: 60px;
+    border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+    opacity: 0.85;
+    animation: floatUp 8s linear infinite;
+}
+
+.balloon::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 14px;
+    background: rgba(255, 255, 255, 0.4);
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.9;
+    }
+    100% {
+        transform: translateY(-120vh) rotate(20deg);
+        opacity: 0;
+    }
+}
+
+/* ==========================================================================
+   AUDIO START BANNER (HỖ TRỢ TRÌNH DUYỆT CHẶN AUTOPLAY)
+   ========================================================================== */
+.audio-start-banner {
+    position: fixed;
+    top: 15px;
+    background: linear-gradient(90deg, #ff758c, #764ba2);
+    color: #fff;
+    padding: 8px 24px;
+    border-radius: 50px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    z-index: 1000;
+    box-shadow: 0 8px 25px rgba(255, 117, 140, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.audio-start-banner:hover {
+    transform: scale(1.05);
+}
+
+/* ==========================================================================
+   BỘ ĐIỀU KHIỂN ÂM NHẠC ĐỈNH CAO: VINYL RECORD PLAYER DOCK
+   ========================================================================== */
+.music-dock {
+    position: fixed;
+    bottom: 20px;
+    right: 25px;
+    z-index: 999;
+    background: rgba(26, 20, 48, 0.85);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--card-border);
+    border-radius: 60px;
+    padding: 10px 22px 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+    max-width: 90vw;
+}
+
+.music-dock:hover {
+    background: rgba(36, 27, 68, 0.95);
+    box-shadow: 0 18px 45px rgba(255, 117, 140, 0.3);
+}
+
+/* Đĩa than Vinyl xoay */
+.vinyl-record-wrap {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+}
+
+.vinyl-disc {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle, #222 30%, #0d0d0d 70%, #000 100%);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: spinVinyl 4s linear infinite;
+    animation-play-state: paused;
+    border: 2px solid #333;
+}
+
+.vinyl-grooves {
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    border: 1px dashed rgba(255, 255, 255, 0.15);
+}
+
+.vinyl-center {
+    width: 24px;
+    height: 24px;
+    background: var(--primary-gradient);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 0.65rem;
+    box-shadow: 0 0 8px rgba(255, 117, 140, 0.8);
+}
+
+.vinyl-disc.spinning {
+    animation-play-state: running;
+}
+
+@keyframes spinVinyl {
+    100% { transform: rotate(360deg); }
+}
+
+/* Cần gạt đĩa than */
+.tonearm {
+    position: absolute;
+    top: -5px;
+    right: -2px;
+    width: 22px;
+    height: 4px;
+    background: #bbb;
+    border-radius: 2px;
+    transform-origin: right top;
+    transform: rotate(-35deg);
+    transition: transform 0.4s ease;
+    pointer-events: none;
+}
+
+.tonearm.playing {
+    transform: rotate(5deg);
+}
+
+/* Track info & visualizer */
+.track-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.track-status-badge {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #ff9cb3;
+    font-weight: 700;
+}
+
+.track-name-ticker {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+/* Visualizer bars */
+.music-visualizer {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 12px;
+}
+
+.music-visualizer span {
+    width: 3px;
+    background: #ff758c;
+    border-radius: 3px;
+    height: 3px;
+    transition: height 0.2s ease;
+}
+
+.music-visualizer.playing span {
+    animation: barPulse 0.8s infinite alternate ease-in-out;
+}
+
+.music-visualizer.playing span:nth-child(2) { animation-delay: 0.2s; }
+.music-visualizer.playing span:nth-child(3) { animation-delay: 0.4s; }
+.music-visualizer.playing span:nth-child(4) { animation-delay: 0.1s; }
+
+@keyframes barPulse {
+    0% { height: 3px; }
+    100% { height: 12px; }
+}
+
+.btn-audio-mini {
+    background: rgba(255, 255, 255, 0.12);
+    border: none;
+    color: #fff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-audio-mini:hover {
+    background: #ff758c;
+    transform: scale(1.1);
+}
+
+.btn-play-main {
+    background: var(--primary-gradient);
+    width: 32px;
+    height: 32px;
+    font-size: 0.85rem;
+}
+
+.volume-range {
+    width: 65px;
+    height: 4px;
+    accent-color: #ff758c;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   PROGRESS STEPPER
+   ========================================================================== */
+.step-indicator-wrapper {
+    position: relative;
+    z-index: 10;
+    margin-bottom: 25px;
+    width: 100%;
+    max-width: 620px;
+    padding: 0 10px;
+}
+
+.step-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: var(--glass-blur);
+    padding: 10px 18px;
+    border-radius: 50px;
+    border: 1px solid var(--card-border);
+}
+
+.step-dot {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    color: #bbb;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.step-text {
+    position: absolute;
+    bottom: -18px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+    color: #ffbed5;
+}
+
+.step-dot.active .step-text, .step-dot:hover .step-text {
+    opacity: 1;
+}
+
+.step-dot.active {
+    background: var(--primary-gradient);
+    color: #fff;
+    transform: scale(1.18);
+    box-shadow: 0 0 20px rgba(255, 117, 140, 0.9);
+}
+
+.step-dot.completed {
+    background: #10b981;
+    color: #fff;
+}
+
+.step-line {
+    flex: 1;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.15);
+    margin: 0 8px;
+    border-radius: 2px;
+}
+
+/* ==========================================================================
+   MAIN CARD & GLASSMORPHISM
+   ========================================================================== */
+.main-container {
+    position: relative;
+    z-index: 10;
+    max-width: 860px;
+    width: 100%;
+}
+
+.glass-card {
+    background: var(--card-bg);
+    backdrop-filter: var(--glass-blur);
+    border-radius: 32px;
+    border: 1px solid var(--card-border);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), inset 0 0 25px rgba(255, 255, 255, 0.04);
+}
+
+.main-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 5vw, 2.9rem);
+    background: linear-gradient(135deg, #ffffff 0%, #ffd0e0 70%, #ff85a2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: var(--text-glow);
+}
+
+.text-light-dim {
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 1.05rem;
+}
+
+.bg-gradient-pill {
+    background: linear-gradient(90deg, #ff758c, #764ba2);
+    color: white;
+    letter-spacing: 1.5px;
+    font-size: 0.78rem;
+    border-radius: 30px;
+    font-weight: 700;
+}
+
+/* Buttons */
+.btn-magic {
+    background: var(--primary-gradient);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 34px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: 0.5px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-magic:hover {
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 12px 30px rgba(255, 117, 140, 0.7);
+    color: #fff;
+}
+
+.btn-glow {
+    box-shadow: 0 0 20px rgba(255, 117, 140, 0.5);
+}
+
+/* ==========================================================================
+   GIFT BOX 3D ANIMATION (STEP 1)
+   ========================================================================== */
+.gift-box-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.gift-box {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    transition: transform 0.3s ease;
+}
+
+.gift-box:hover {
+    transform: scale(1.1) rotate(-3deg);
+}
+
+.gift-body {
+    position: absolute;
+    bottom: 0;
+    width: 140px;
+    height: 110px;
+    background: linear-gradient(135deg, #e52d27 0%, #b31217 100%);
+    border-radius: 14px;
+    box-shadow: 0 15px 35px rgba(229, 45, 39, 0.5);
+    overflow: hidden;
+}
+
+.gift-lid {
+    position: absolute;
+    top: 15px;
+    left: -5px;
+    width: 150px;
+    height: 34px;
+    background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    z-index: 2;
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.gift-box.open .gift-lid {
+    transform: translateY(-60px) rotate(-25deg) scale(0.9);
+}
+
+.gift-bow {
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 48px;
+    height: 22px;
+    background: #ffd700;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -2px 10px rgba(255, 215, 0, 0.6);
+}
+
+.ribbon-v {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 26px;
+    height: 100%;
+    background: #ffd700;
+}
+
+.ribbon-h {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 26px;
+    background: #ffd700;
+}
+
+.gift-hint {
+    color: #ff9cb3;
+    font-size: 1rem;
+}
+
+.pulse-text {
+    animation: pulseText 1.6s infinite ease-in-out;
+}
+
+@keyframes pulseText {
+    0%, 100% { opacity: 0.8; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+}
+
+/* ==========================================================================
+   CAKE & REALISTIC FLAME / SMOKE (STEP 2)
+   ========================================================================== */
+.cake-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 250px;
+}
+
+.cake {
+    position: relative;
+    width: 220px;
+    height: 170px;
+}
+
+.plate {
+    position: absolute;
+    bottom: -15px;
+    left: -25px;
+    width: 270px;
+    height: 22px;
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(8px);
+    border-radius: 50%;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+}
+
+.layer {
+    position: absolute;
+    width: 220px;
+    height: 55px;
+    border-radius: 50%;
+}
+
+.layer-bottom {
+    bottom: 0;
+    height: 75px;
+    border-radius: 0 0 38px 38px;
+    background: linear-gradient(to right, #5c2c16, #7a3a1d);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.3);
+}
+
+.layer-middle {
+    bottom: 45px;
+    height: 65px;
+    width: 196px;
+    left: 12px;
+    border-radius: 0 0 28px 28px;
+    background: linear-gradient(to right, #ff9ebb, #ff6b8b);
+}
+
+.layer-top {
+    bottom: 95px;
+    height: 55px;
+    width: 172px;
+    left: 24px;
+    border-radius: 22px;
+    background: #fff;
+    box-shadow: inset 0 -4px 10px rgba(0,0,0,0.12);
+}
+
+.icing {
+    position: absolute;
+    top: 55px;
+    left: 24px;
+    width: 172px;
+    height: 32px;
+    background: #fff;
+    border-radius: 16px 16px 28px 28px;
+}
+
+/* Nến & Ngọn lửa */
+.candle {
+    position: absolute;
+    top: 35px;
+    left: 103px;
+    width: 14px;
+    height: 52px;
+    background: repeating-linear-gradient(
+        45deg,
+        #ffd166,
+        #ffd166 6px,
+        #06d6a0 6px,
+        #06d6a0 12px
+    );
+    border-radius: 4px 4px 0 0;
+    cursor: pointer;
+    z-index: 5;
+    transition: transform 0.2s;
+}
+
+.candle:hover {
+    transform: scale(1.15);
+}
+
+.wick {
+    position: absolute;
+    top: -8px;
+    left: 6px;
+    width: 2px;
+    height: 8px;
+    background: #333;
+}
+
+.flame {
+    position: absolute;
+    top: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 18px;
+    height: 28px;
+    background: radial-gradient(circle at 50% 80%, #ffffff 0%, #ffbe0b 50%, #ff0055 100%);
+    border-radius: 50% 50% 20% 20%;
+    box-shadow: 0 0 25px #ffbe0b, 0 0 50px #ff0055;
+    animation: flicker 0.7s infinite alternate ease-in-out;
+    transition: all 0.4s ease;
+}
+
+.flame.extinguished {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.1);
+    box-shadow: none;
+}
+
+/* Khói sau khi thổi tắt */
+.smoke {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background: rgba(200, 200, 200, 0.8);
+    border-radius: 50%;
+    opacity: 0;
+}
+
+.smoke.active {
+    animation: smokeDrift 2s forwards ease-out;
+}
+
+@keyframes smokeDrift {
+    0% { opacity: 0.8; transform: translate(-50%, 0) scale(1); }
+    100% { opacity: 0; transform: translate(-30px, -45px) scale(4); filter: blur(3px); }
+}
+
+@keyframes flicker {
+    0% { transform: translateX(-50%) rotate(-3deg) scale(0.95); }
+    100% { transform: translateX(-50%) rotate(3deg) scale(1.15); }
+}
+
+.alert-soft-warning {
+    background: rgba(255, 190, 11, 0.18);
+    border: 1px solid rgba(255, 190, 11, 0.5);
+    color: #ffd166;
+    border-radius: 20px;
+}
+
+/* ==========================================================================
+   LETTER CARD (STEP 3)
+   ========================================================================== */
+.letter-envelope-wrap {
+    max-width: 650px;
+    position: relative;
+}
+
+.letter-card {
+    background: #fdfaf6;
+    color: #2b2b2b;
+    border-radius: 24px;
+    position: relative;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.4);
+    border: 1px solid rgba(0,0,0,0.06);
+}
+
+.letter-stamp {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    opacity: 0.7;
+}
+
+.greeting-handwriting {
+    font-family: 'Dancing Script', cursive;
+    color: #d90429;
+    font-weight: 700;
+}
+
+.signature-font {
+    font-family: 'Pacifico', cursive;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.wish-list li {
+    margin-bottom: 14px;
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   CAROUSEL ENHANCEMENT (STEP 4)
+   ========================================================================== */
+.carousel-img {
+    height: 400px;
+    object-fit: cover;
+    filter: brightness(0.92);
+    transition: transform 0.6s ease;
+}
+
+.carousel-item:hover .carousel-img {
+    transform: scale(1.04);
+}
+
+.carousel-caption {
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(10px);
+    border-radius: 18px;
+    padding: 16px 20px;
+    bottom: 25px;
+}
+
+/* ==========================================================================
+   FORTUNE COOKIE MINI-GAME (STEP 5)
+   ========================================================================== */
+.fortune-cookie-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cookie-card {
+    background: rgba(255, 255, 255, 0.08);
+    border: 2px dashed rgba(255, 255, 255, 0.35);
+    border-radius: 24px;
+    max-width: 580px;
+    width: 100%;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.4s ease;
+}
+
+.cookie-card.revealed {
+    background: linear-gradient(135deg, rgba(255, 117, 140, 0.25), rgba(118, 75, 162, 0.25));
+    border-style: solid;
+    border-color: #ffd166;
+    transform: scale(1.02);
+    box-shadow: 0 0 30px rgba(255, 209, 102, 0.3);
+}
+
+.fortune-text {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #fff;
+    padding: 0 15px;
+}
+
+.form-control-custom {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #fff;
+    border-radius: 30px 0 0 30px !important;
+    padding: 10px 20px;
+}
+
+.form-control-custom:focus {
+    background: rgba(255, 255, 255, 0.22);
+    color: #fff;
+    border-color: #ff758c;
+    box-shadow: 0 0 15px rgba(255, 117, 140, 0.5);
+}
+
+.form-control-custom::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.glass-modal {
+    background: rgba(20, 16, 35, 0.95);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 28px;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+@media (max-width: 768px) {
+    .step-indicator {
+        padding: 8px 12px;
+    }
+    .step-dot {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
+    }
+    .step-text {
+        display: none;
+    }
+    .carousel-img {
+        height: 270px;
+    }
+    .glass-card {
+        padding: 24px 16px !important;
+    }
+    .music-dock {
+        right: 10px;
+        bottom: 12px;
+        padding: 8px 14px;
+        border-radius: 40px;
+    }
+    .vinyl-record-wrap {
+        width: 48px;
+        height: 48px;
+    }
+    .track-name-ticker {
+        max-width: 140px;
+        font-size: 0.78rem;
+    }
+}
