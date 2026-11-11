@@ -503,6 +503,48 @@ animateParticles();
 loadTrack(0);
 
 /* ==========================================================================
+   SPARKLE TOUCH / CURSOR TRAIL (VỆT ÁNH SAO LẤP LÁNH KHI CHẠM / RÊ CHUỘT)
+   ========================================================================== */
+function createSparkle(x, y) {
+    const sparkle = document.createElement('div');
+    sparkle.className = 'sparkle-star';
+    sparkle.innerHTML = '✨';
+    sparkle.style.left = `${x}px`;
+    sparkle.style.top = `${y}px`;
+    
+    // Ngẫu nhiên màu sắc và kích thước nhỏ xinh
+    const size = Math.random() * 12 + 10;
+    const rotate = Math.random() * 360;
+    sparkle.style.fontSize = `${size}px`;
+    sparkle.style.transform = `translate(-50%, -50%) rotate(${rotate}deg)`;
+    
+    document.body.appendChild(sparkle);
+    setTimeout(() => sparkle.remove(), 700);
+}
+
+// Di chuyển chuột trên máy tính
+let lastSparkleTime = 0;
+window.addEventListener('mousemove', (e) => {
+    const now = Date.now();
+    if (now - lastSparkleTime > 40) {
+        createSparkle(e.clientX, e.clientY);
+        lastSparkleTime = now;
+    }
+});
+
+// Vuốt chạm trên màn hình điện thoại
+window.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 0) {
+        const touch = e.touches[0];
+        const now = Date.now();
+        if (now - lastSparkleTime > 50) {
+            createSparkle(touch.clientX, touch.clientY);
+            lastSparkleTime = now;
+        }
+    }
+}, { passive: true });
+
+/* ==========================================================================
    LIVE REALTIME CLOCK (ĐỒNG HỒ NGÀY GIỜ SỐNG ĐỘNG)
    ========================================================================== */
 function updateLiveClock() {

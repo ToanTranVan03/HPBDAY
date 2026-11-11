@@ -1029,3 +1029,29 @@ body {
         font-size: 0.78rem;
     }
 }
+
+
+/* Sparkle Cursor Animation */
+.sparkle-star {
+    position: fixed;
+    pointer-events: none;
+    z-index: 99999;
+    user-select: none;
+    animation: sparkleFade 0.7s forwards ease-out;
+}
+
+@keyframes sparkleFade {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.6);
+    }
+    50% {
+        opacity: 0.9;
+        transform: translate(-50%, -70%) scale(1.2);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -100%) scale(0.3);
+    }
+}
+
