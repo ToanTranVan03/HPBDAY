@@ -3,7 +3,7 @@
    ========================================================================== */
 let currentStep = 1;
 const totalSteps = 5;
-let recipientName = "Bạn Yêu";
+let recipientName = "Lê Thị Ngọc Ngà";
 let candleBlown = false;
 
 // SFX Audio Elements
