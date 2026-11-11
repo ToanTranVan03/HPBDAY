@@ -317,13 +317,17 @@ const fortunes = [
 function drawFortune() {
     const card = document.getElementById('fortuneCard');
     const resultText = document.getElementById('fortuneResult');
+    const badge = document.getElementById('fortuneBadge');
     
     playSFX(sfxChime);
     card.classList.add('animate__animated', 'animate__headShake');
     
     setTimeout(() => {
         const randomIndex = Math.floor(Math.random() * fortunes.length);
-        resultText.innerText = fortunes[randomIndex];
+        resultText.innerHTML = `<span class="text-warning">✨ Quẻ của bạn:</span> ${fortunes[randomIndex]}`;
+        if (badge) {
+            badge.innerHTML = `<span class="badge bg-success px-3 py-1 rounded-pill"><i class="fas fa-check-circle me-1"></i> Quẻ Đã Mở</span>`;
+        }
         card.classList.add('revealed');
         card.classList.remove('animate__animated', 'animate__headShake');
         burstConfettiSmall();

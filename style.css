@@ -752,60 +752,192 @@ body {
 }
 
 /* ==========================================================================
-   FORTUNE COOKIE MINI-GAME (STEP 5)
+   FORTUNE COOKIE MINI-GAME (STEP 5) - REDESIGNED LUXURY
    ========================================================================== */
 .fortune-cookie-box {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
 }
 
 .cookie-card {
-    background: rgba(255, 255, 255, 0.08);
-    border: 2px dashed rgba(255, 255, 255, 0.35);
-    border-radius: 24px;
-    max-width: 580px;
+    background: radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.12), rgba(20, 15, 38, 0.8));
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 28px;
+    max-width: 620px;
     width: 100%;
-    min-height: 150px;
+    min-height: 180px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: all 0.4s ease;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(255, 215, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.cookie-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #ffd166, transparent);
 }
 
 .cookie-card.revealed {
-    background: linear-gradient(135deg, rgba(255, 117, 140, 0.25), rgba(118, 75, 162, 0.25));
-    border-style: solid;
-    border-color: #ffd166;
+    background: radial-gradient(circle at 50% 30%, rgba(255, 117, 140, 0.25), rgba(20, 15, 38, 0.95));
+    border-color: #ff758c;
+    box-shadow: 0 0 40px rgba(255, 117, 140, 0.4), inset 0 0 25px rgba(255, 117, 140, 0.15);
     transform: scale(1.02);
-    box-shadow: 0 0 30px rgba(255, 209, 102, 0.3);
+}
+
+.fortune-icon-spin {
+    color: #ffd166;
+    filter: drop-shadow(0 0 12px rgba(255, 209, 102, 0.8));
+    transition: all 0.3s ease;
+}
+
+.cookie-card.revealed .fortune-icon-spin {
+    color: #ff758c;
+    filter: drop-shadow(0 0 15px rgba(255, 117, 140, 0.9));
+    transform: rotate(15deg) scale(1.1);
 }
 
 .fortune-text {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     font-weight: 600;
-    color: #fff;
-    padding: 0 15px;
+    color: #ffffff;
+    line-height: 1.6;
+    padding: 0 20px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
 }
 
-.form-control-custom {
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    color: #fff;
-    border-radius: 30px 0 0 30px !important;
-    padding: 10px 20px;
+/* 3 Nút tương tác cân xứng, hiện đại */
+.fortune-actions-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    width: 100%;
+    max-width: 620px;
 }
 
-.form-control-custom:focus {
-    background: rgba(255, 255, 255, 0.22);
+.btn-action-glow {
+    flex: 1 1 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 13px 20px;
+    border-radius: 50px;
+    border: none;
+    font-weight: 700;
+    font-size: 0.95rem;
     color: #fff;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-action-glow:hover {
+    transform: translateY(-4px) scale(1.03);
+}
+
+.btn-action-glow .btn-icon {
+    font-size: 1.15rem;
+}
+
+.btn-action-fortune {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+}
+.btn-action-fortune:hover {
+    box-shadow: 0 12px 30px rgba(245, 158, 11, 0.65);
+}
+
+.btn-action-firework {
+    background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+}
+.btn-action-firework:hover {
+    box-shadow: 0 12px 30px rgba(239, 68, 68, 0.65);
+}
+
+.btn-action-balloon {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+}
+.btn-action-balloon:hover {
+    box-shadow: 0 12px 30px rgba(59, 130, 246, 0.65);
+}
+
+/* Card Đổi Tên Tinh Tế */
+.name-customizer-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 22px;
+    max-width: 620px;
+    width: 100%;
+}
+
+.custom-input-group {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    padding: 4px 6px 4px 18px;
+    transition: all 0.3s ease;
+}
+
+.custom-input-group:focus-within {
     border-color: #ff758c;
-    box-shadow: 0 0 15px rgba(255, 117, 140, 0.5);
+    box-shadow: 0 0 20px rgba(255, 117, 140, 0.4);
+    background: rgba(255, 255, 255, 0.14);
 }
 
-.form-control-custom::placeholder {
-    color: rgba(255, 255, 255, 0.6);
+.custom-input-group .input-icon {
+    color: #ff9cb3;
+    font-size: 1rem;
+    margin-right: 12px;
+}
+
+.form-control-styled {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 0.95rem;
+    padding: 8px 0;
+}
+
+.form-control-styled::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
+}
+
+.btn-update-name {
+    background: var(--primary-gradient);
+    border: none;
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 10px 22px;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.btn-update-name:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(255, 117, 140, 0.6);
 }
 
 .glass-modal {
