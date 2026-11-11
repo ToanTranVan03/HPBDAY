@@ -264,65 +264,80 @@
             </div>
         </section>
 
-        <!-- ==================== BƯỚC 4: ALBUM KỶ NIỆM (CAROUSEL BOOTSTRAP XỊN) ==================== -->
+        <!-- ==================== BƯỚC 4: ALBUM KỶ NIỆM (POLAROID INTERACTIVE CARDS) ==================== -->
         <section class="step-section animate__animated animate__fadeIn d-none" id="step-4">
             <div class="glass-card text-center p-4 p-md-5">
                 <div class="top-tag mb-3">
-                    <span class="badge bg-gradient-pill px-3 py-2"><i class="fas fa-camera-retro me-1"></i> MOMENTS & MEMORIES <i class="fas fa-camera-retro ms-1"></i></span>
+                    <span class="badge bg-gradient-pill px-3 py-2"><i class="fas fa-camera-retro me-1"></i> GÓC KỶ NIỆM & KHOẢNH KHẮC <i class="fas fa-camera-retro ms-1"></i></span>
                 </div>
-                <h2 class="main-title mb-2">Những Khoảnh Khắc Đẹp Đẽ</h2>
-                <p class="subtitle text-light-dim mb-4">Lưu giữ từng khoảnh khắc ngọt ngào nhất của tuổi thanh xuân.</p>
+                <h2 class="main-title mb-2">Những Thước Phim Đẹp Đẽ 📸</h2>
+                <p class="subtitle text-light-dim mb-4">Chạm vào từng bức ảnh Polaroid để xem thông điệp ngọt ngào phía sau nhé!</p>
 
-                <!-- Bootstrap 5 Carousel nâng cao -->
-                <div id="memoryCarousel" class="carousel slide carousel-fade shadow-lg rounded-4 overflow-hidden mx-auto" data-bs-ride="carousel" style="max-width: 720px;">
-                    <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#memoryCarousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
-                        <button type="button" data-bs-target="#memoryCarousel" data-bs-slide-to="1"></button>
-                        <button type="button" data-bs-target="#memoryCarousel" data-bs-slide-to="2"></button>
-                        <button type="button" data-bs-target="#memoryCarousel" data-bs-slide-to="3"></button>
-                    </div>
-                    <div class="carousel-inner">
-                        <div class="carousel-item active" data-bs-interval="4500">
-                            <img src="https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1200&q=80" class="d-block w-100 carousel-img" alt="Party">
-                            <div class="carousel-caption">
-                                <span class="badge bg-danger mb-2">Party Vibe</span>
-                                <h5>Ngập Tràn Niềm Vui & Sắc Màu</h5>
-                                <p>Chúc bạn một tuổi mới rạng rỡ và muôn màu muôn vẻ như bữa tiệc này!</p>
+                <!-- Lưới 4 Thẻ Ảnh Polaroid Lật Mặt Sau (3D Flip Cards) -->
+                <div class="polaroid-grid my-4">
+                    <!-- Ảnh 1 -->
+                    <div class="polaroid-card" onclick="flipPolaroid(this)">
+                        <div class="polaroid-inner">
+                            <div class="polaroid-front">
+                                <img src="https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=600&q=80" alt="Party" class="polaroid-img">
+                                <div class="polaroid-caption">🎉 Rực rỡ & Sắc màu</div>
                             </div>
-                        </div>
-                        <div class="carousel-item" data-bs-interval="4500">
-                            <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1200&q=80" class="d-block w-100 carousel-img" alt="Cake">
-                            <div class="carousel-caption">
-                                <span class="badge bg-warning text-dark mb-2">Sweetness</span>
-                                <h5>Ngọt Ngào Tuổi Mới</h5>
-                                <p>Ngọt ngào và ấm áp như hương vị của chiếc bánh kem sinh nhật.</p>
-                            </div>
-                        </div>
-                        <div class="carousel-item" data-bs-interval="4500">
-                            <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1200&q=80" class="d-block w-100 carousel-img" alt="Balloons">
-                            <div class="carousel-caption">
-                                <span class="badge bg-info text-dark mb-2">Dreams</span>
-                                <h5>Bay Cao Những Ước Mơ</h5>
-                                <p>Hãy tự do vút bay đến những chân trời thành công mới!</p>
-                            </div>
-                        </div>
-                        <div class="carousel-item" data-bs-interval="4500">
-                            <img src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&w=1200&q=80" class="d-block w-100 carousel-img" alt="Friends">
-                            <div class="carousel-caption">
-                                <span class="badge bg-success mb-2">Together</span>
-                                <h5>Bên Cạnh Những Người Yêu Thương</h5>
-                                <p>Hạnh phúc luôn ở quanh bạn trong từng phút giây cuộc đời.</p>
+                            <div class="polaroid-back">
+                                <div class="polaroid-tape"></div>
+                                <h5 class="text-danger greeting-handwriting fs-4">Gửi Ngọc Ngà ✨</h5>
+                                <p class="small text-muted mb-0">Chúc nụ cười của bạn luôn tỏa sáng rực rỡ như bữa tiệc muôn màu này, không bao giờ tắt nhé!</p>
+                                <span class="badge bg-danger rounded-pill px-2 py-1 mt-2 small">#Love</span>
                             </div>
                         </div>
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#memoryCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#memoryCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
+
+                    <!-- Ảnh 2 -->
+                    <div class="polaroid-card" onclick="flipPolaroid(this)">
+                        <div class="polaroid-inner">
+                            <div class="polaroid-front">
+                                <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=600&q=80" alt="Cake" class="polaroid-img">
+                                <div class="polaroid-caption">🎂 Ngọt ngào tuổi mới</div>
+                            </div>
+                            <div class="polaroid-back">
+                                <div class="polaroid-tape"></div>
+                                <h5 class="text-warning greeting-handwriting fs-4">Sweet Moment 🍰</h5>
+                                <p class="small text-muted mb-0">Tuổi mới thêm nhiều niềm vui mới, ngọt ngào và đong đầy yêu thương từ tất cả mọi người!</p>
+                                <span class="badge bg-warning text-dark rounded-pill px-2 py-1 mt-2 small">#Sweet</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ảnh 3 -->
+                    <div class="polaroid-card" onclick="flipPolaroid(this)">
+                        <div class="polaroid-inner">
+                            <div class="polaroid-front">
+                                <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=600&q=80" alt="Balloons" class="polaroid-img">
+                                <div class="polaroid-caption">🎈 Bay cao ước mơ</div>
+                            </div>
+                            <div class="polaroid-back">
+                                <div class="polaroid-tape"></div>
+                                <h5 class="text-info greeting-handwriting fs-4">Dream Big 🌟</h5>
+                                <p class="small text-muted mb-0">Tự do vút bay đến những chân trời thành công mới, ước mơ nào cũng sẽ thành hiện thực!</p>
+                                <span class="badge bg-info text-dark rounded-pill px-2 py-1 mt-2 small">#Dreams</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ảnh 4 -->
+                    <div class="polaroid-card" onclick="flipPolaroid(this)">
+                        <div class="polaroid-inner">
+                            <div class="polaroid-front">
+                                <img src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&w=600&q=80" alt="Celebration" class="polaroid-img">
+                                <div class="polaroid-caption">💖 Luôn hạnh phúc</div>
+                            </div>
+                            <div class="polaroid-back">
+                                <div class="polaroid-tape"></div>
+                                <h5 class="text-success greeting-handwriting fs-4">Always Happy 🍀</h5>
+                                <p class="small text-muted mb-0">Mỗi ngày trôi qua đều là một ngày ngập tràn tiếng cười và bình an bên những người thân yêu.</p>
+                                <span class="badge bg-success rounded-pill px-2 py-1 mt-2 small">#Forever</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="d-flex justify-content-center gap-3 mt-4">

@@ -518,8 +518,13 @@ function animateParticles() {
 }
 animateParticles();
 
-// Tự nạp bài hát đầu tiên
-loadTrack(0);
+/* ==========================================================================
+   POLAROID FLIP CARD (STEP 4)
+   ========================================================================== */
+function flipPolaroid(el) {
+    el.classList.toggle('flipped');
+    playSFX(sfxChime);
+}
 
 /* ==========================================================================
    SPARKLE TOUCH / CURSOR TRAIL (VỆT ÁNH SAO LẤP LÁNH KHI CHẠM / RÊ CHUỘT)
@@ -590,3 +595,8 @@ function updateLiveClock() {
 
 setInterval(updateLiveClock, 1000);
 updateLiveClock();
+
+
+// T? n?p b�i h�t d?u ti�n
+loadTrack(0);
+
