@@ -83,19 +83,6 @@
         <i class="fas fa-headphones-simple me-2"></i> Nhấp bất kỳ đâu để bật âm thanh & hiệu ứng trọn vẹn! 🎵
     </div>
 
-    <!-- WIDGET ĐỒNG HỒ NGÀY GIỜ SỐNG ĐỘNG (LUXURY TIME BADGE) -->
-    <div class="live-clock-dock animate__animated animate__fadeInDown">
-        <div class="clock-calendar">
-            <i class="far fa-calendar-star text-warning me-2"></i>
-            <span id="liveDate">Thứ Tư, 11/11/2026</span>
-        </div>
-        <div class="clock-divider"></div>
-        <div class="clock-time">
-            <i class="far fa-clock text-info me-2"></i>
-            <span id="liveTime">00:00:00</span>
-        </div>
-    </div>
-
     <!-- Audio Element -->
     <audio id="mainAudio" preload="auto">
         <source src="audio/happy_birthday_melody.wav" type="audio/wav">
@@ -104,6 +91,21 @@
     <!-- =========================================================================
          THANH TIẾN TRÌNH CHUYỂN BƯỚC ĐẲNG CẤP (STEPPER PROGRESS)
          ========================================================================= -->
+    <!-- WIDGET ĐỒNG HỒ NGÀY GIỜ SỐNG ĐỘNG (LUXURY TIME BADGE) -->
+    <div class="live-clock-wrapper animate__animated animate__fadeInDown">
+        <div class="live-clock-dock">
+            <div class="clock-calendar">
+                <i class="far fa-calendar-star text-warning me-1"></i>
+                <span id="liveDate">Thứ Tư, 11/11/2026</span>
+            </div>
+            <div class="clock-divider"></div>
+            <div class="clock-time">
+                <i class="far fa-clock text-info me-1"></i>
+                <span id="liveTime">00:00:00</span>
+            </div>
+        </div>
+    </div>
+
     <div class="step-indicator-wrapper">
         <div class="step-indicator">
             <div class="step-dot active" data-step="1" title="Hộp Quà Kỳ Diệu"><i class="fas fa-gift"></i><span class="step-text">Mở Quà</span></div>
